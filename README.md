@@ -79,9 +79,14 @@ Executable จะอยู่ที่ `bin/main` (macOS/Linux) หรือ `bi
 วิธีที่ง่ายที่สุด ใช้ `build.sh`:
 
 ```bash
-./build.sh 1 1     # Part 1, Example 1 (Hello World)
+./build.sh 1 1     # Part 1, Example 1 (Hello World) → build + รัน
 ./build.sh 2 3     # Part 2, Example 3 (Chart Time Series)
 ./build.sh 5 5     # Part 5, Example 5 (WiFi Manager)
+./build.sh 3 2 -b  # Part 3, Example 2 → build อย่างเดียว (ไม่รัน)
+./build.sh         # build ค่าปัจจุบัน + รัน
+./build.sh -l      # แสดงรายการตัวอย่างทั้งหมด
+./build.sh -c      # ลบ build directory (clean)
+./build.sh -h      # แสดงวิธีใช้
 ```
 
 Script จะ:
@@ -89,7 +94,7 @@ Script จะ:
 2. สร้าง build directory + cmake (ถ้ายังไม่มี)
 3. Build โปรเจค
 4. Copy `SDL2.dll` ให้อัตโนมัติ (Windows)
-5. รันโปรแกรมทันที
+5. รันโปรแกรมทันที (ยกเว้นใช้ `-b`)
 
 ---
 
@@ -178,9 +183,10 @@ make -j
 ## โครงสร้างโปรเจค
 
 ```
-lv_port_pc_vscode/
+lv_port_pc_vscode_aic-eec/
+├── build.sh                   Build Script (แนะนำ)
 ├── src/
-│   ├── example_selector.h    <-- ตั้งค่า Part + Example ที่นี่
+│   ├── example_selector.h     <-- ตั้งค่า Part + Example ที่นี่
 │   ├── main.c
 │   ├── part1/                 Part 1: LVGL พื้นฐาน
 │   ├── part2/                 Part 2: เซ็นเซอร์
@@ -192,7 +198,8 @@ lv_port_pc_vscode/
 ├── lvgl/                      LVGL Library v9.2
 ├── lv_conf.h                  LVGL Configuration
 ├── CMakeLists.txt             Build Configuration
-└── bin/                       Output Executables
+├── bin/                       Output Executables
+└── build/                     Build Directory (auto-generated)
 ```
 
 ---
@@ -223,6 +230,52 @@ rm -rf build
 mkdir build && cd build
 cmake ..
 make -j
+```
+
+หรือใช้ `build.sh`:
+
+```bash
+./build.sh -c        # clean
+./build.sh 1 1       # build ใหม่
+```
+
+---
+
+## แก้ปัญหา (Troubleshooting)
+
+### Windows: cmake "Permission denied" หรือหา compiler ไม่เจอ
+
+ถ้าติดตั้ง cmake จาก Windows (winget/installer) ไว้ด้วย จะชนกับ cmake ของ MSYS2
+
+**ตรวจสอบ:**
+```bash
+which cmake
+```
+
+ถ้าได้ `/c/Program Files/CMake/bin/cmake` แสดงว่าใช้ตัวผิด
+
+**แก้ไข:** เพิ่ม PATH ก่อนรัน cmake
+```bash
+export PATH=/ucrt64/bin:$PATH
+```
+
+หรือ**ถอนการติดตั้ง cmake ตัว Windows** ออก (ผ่าน Settings > Apps)
+
+### Windows: SDL2.dll was not found
+
+```bash
+cp /ucrt64/bin/SDL2.dll bin/
+```
+
+หรือใช้ `build.sh` ซึ่งจะ copy ให้อัตโนมัติ
+
+### ทุก OS: Build ไม่ผ่านหลังย้ายโฟลเดอร์
+
+ถ้าย้าย directory ของโปรเจค ต้อง clean build ใหม่เพราะ cmake cache จำ path เดิม:
+
+```bash
+rm -rf build bin
+./build.sh 1 1
 ```
 
 ---
