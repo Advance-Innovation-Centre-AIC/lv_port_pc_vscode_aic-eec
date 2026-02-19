@@ -36,21 +36,27 @@ sudo apt install build-essential cmake libsdl2-dev
 
 ---
 
-## Build
+## Build (ครั้งแรก)
 
 **Windows:** ต้องรันใน **MSYS2 UCRT64** terminal เท่านั้น
 
 ```bash
-cd lv_port_pc_vscode
+cd lv_port_pc_vscode_aic-eec
 mkdir build && cd build
 cmake -G "MSYS Makefiles" ..
 make -j
 ```
 
+> **สำคัญ (Windows):** หลัง build เสร็จครั้งแรก ต้อง copy `SDL2.dll` มาไว้ใน `bin/`:
+> ```bash
+> cp /ucrt64/bin/SDL2.dll bin/
+> ```
+> ถ้าไม่ทำจะเจอ error "SDL2.dll was not found" ตอนรัน
+
 **macOS / Linux:**
 
 ```bash
-cd lv_port_pc_vscode
+cd lv_port_pc_vscode_aic-eec
 mkdir build && cd build
 cmake ..
 make -j
@@ -66,11 +72,28 @@ Executable จะอยู่ที่ `bin/main` (macOS/Linux) หรือ `bi
 ./bin/main
 ```
 
-Windows: ต้อง copy `SDL2.dll` มาไว้ใน `bin/` ด้วย (ปกติอยู่ที่ `/ucrt64/bin/SDL2.dll`)
+---
+
+## เลือกตัวอย่าง + Build ด้วย build.sh (แนะนำ)
+
+วิธีที่ง่ายที่สุด ใช้ `build.sh`:
+
+```bash
+./build.sh 1 1     # Part 1, Example 1 (Hello World)
+./build.sh 2 3     # Part 2, Example 3 (Chart Time Series)
+./build.sh 5 5     # Part 5, Example 5 (WiFi Manager)
+```
+
+Script จะ:
+1. ตั้งค่า `SELECTED_PART` และ `SELECTED_EXAMPLE` ใน `src/example_selector.h` ให้อัตโนมัติ
+2. สร้าง build directory + cmake (ถ้ายังไม่มี)
+3. Build โปรเจค
+4. Copy `SDL2.dll` ให้อัตโนมัติ (Windows)
+5. รันโปรแกรมทันที
 
 ---
 
-## เลือกตัวอย่าง
+## เลือกตัวอย่าง (แบบ Manual)
 
 แก้ไขไฟล์ `src/example_selector.h`:
 
@@ -79,7 +102,7 @@ Windows: ต้อง copy `SDL2.dll` มาไว้ใน `bin/` ด้วย 
 #define SELECTED_EXAMPLE    1    // เลือก Example
 ```
 
-แก้แล้ว **build ใหม่**:
+แล้ว build ใหม่:
 
 ```bash
 cd build
