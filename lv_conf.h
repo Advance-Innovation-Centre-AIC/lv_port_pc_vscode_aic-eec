@@ -803,7 +803,7 @@
 
 #define LV_USE_LIST       1
 
-#define LV_USE_LOTTIE     1
+#define LV_USE_LOTTIE     0
 
 #define LV_USE_MENU       1
 
@@ -1031,11 +1031,11 @@
  *  Requires `LV_USE_MATRIX = 1`
  *  and a rendering engine supporting vector graphics, e.g.
  *  (LV_USE_DRAW_SW and LV_USE_THORVG) or LV_USE_DRAW_VG_LITE or LV_USE_NEMA_VG. */
-#define LV_USE_VECTOR_GRAPHIC  1
+#define LV_USE_VECTOR_GRAPHIC  0
 
 /** Enable ThorVG (vector graphics library) from the src/libs folder.
  *  Requires LV_USE_VECTOR_GRAPHIC */
-#define LV_USE_THORVG_INTERNAL 1 
+#define LV_USE_THORVG_INTERNAL 0
 
 /** Enable ThorVG by assuming that its installed and linked to the project
  *  Requires LV_USE_VECTOR_GRAPHIC */
