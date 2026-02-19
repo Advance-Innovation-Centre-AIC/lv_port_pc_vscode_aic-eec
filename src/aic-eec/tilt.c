@@ -260,21 +260,22 @@ void aic_tilt_set_dt(float dt)
 
 bool aic_tilt_update_from_imu(void)
 {
-    float ax, ay, az;
-    float gx, gy, gz;
+    int16_t raw_ax, raw_ay, raw_az;
+    int16_t raw_gx, raw_gy, raw_gz;
 
     /* Read accelerometer */
-    if (!aic_imu_read_accel(&ax, &ay, &az)) {
+    if (!aic_imu_read_accel(&raw_ax, &raw_ay, &raw_az)) {
         return false;
     }
 
     /* Read gyroscope */
-    if (!aic_imu_read_gyro(&gx, &gy, &gz)) {
+    if (!aic_imu_read_gyro(&raw_gx, &raw_gy, &raw_gz)) {
         return false;
     }
 
     /* Update tilt estimation */
-    return aic_tilt_update(ax, ay, az, gx, gy, gz);
+    return aic_tilt_update((float)raw_ax, (float)raw_ay, (float)raw_az,
+                           (float)raw_gx, (float)raw_gy, (float)raw_gz);
 }
 
 /* [] END OF FILE */
