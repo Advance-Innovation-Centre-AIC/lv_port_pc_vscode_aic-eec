@@ -1,0 +1,39 @@
+Fix: ThorVG "config.h: No such file or directory" on Windows/MSYS2
+=====================================================================
+
+Problem:
+  LVGL's built-in ThorVG library requires a config.h that is generated
+  by cmake. On Windows/MSYS2, this file is not generated correctly,
+  causing all ThorVG .cpp files to fail with:
+    fatal error: config.h: No such file or directory
+
+  This affects the original lv_port_pc_vscode from LVGL's repo.
+  Our customized repo (lv_port_pc_vscode_aic-eec) already has this fix.
+
+Solution:
+  ThorVG is used for Lottie animations and vector graphics, which are
+  not needed for the course examples. Disable it entirely.
+
+Steps:
+  1. Edit lv_conf.h - change these 3 defines to 0:
+
+     #define LV_USE_LOTTIE          0
+     #define LV_USE_VECTOR_GRAPHIC  0
+     #define LV_USE_THORVG_INTERNAL 0
+
+  2. Edit CMakeLists.txt - add this BEFORE the add_subdirectory(lvgl) line:
+
+     # Disable ThorVG (causes config.h issues on Windows/MSYS2)
+     set(CONFIG_LV_USE_THORVG_INTERNAL OFF CACHE BOOL "" FORCE)
+
+  3. Edit CMakeLists.txt - remove lvgl::thorvg from MAIN_LIBS:
+
+     Before: set(MAIN_LIBS lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
+     After:  set(MAIN_LIBS lvgl lvgl::examples lvgl::demos ${SDL2_LIBRARIES})
+
+  4. Clean and rebuild:
+
+     rm -rf build
+     mkdir build && cd build
+     cmake -G "MSYS Makefiles" ..
+     make -j

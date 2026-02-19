@@ -198,6 +198,7 @@ lv_port_pc_vscode_aic-eec/
 ├── lvgl/                      LVGL Library v9.2
 ├── lv_conf.h                  LVGL Configuration
 ├── CMakeLists.txt             Build Configuration
+├── patches/                   Patch files สำหรับ repo ต้นฉบับ LVGL
 ├── bin/                       Output Executables
 └── build/                     Build Directory (auto-generated)
 ```
@@ -268,6 +269,24 @@ cp /ucrt64/bin/SDL2.dll bin/
 ```
 
 หรือใช้ `build.sh` ซึ่งจะ copy ให้อัตโนมัติ
+
+### Windows: ThorVG "config.h: No such file or directory"
+
+> **หมายเหตุ:** ปัญหานี้เกิดเฉพาะกรณีที่ไปโหลด repo ต้นฉบับจาก LVGL
+> (`git clone https://github.com/lvgl/lv_port_pc_vscode.git`) มาใช้เอง
+> **repo นี้ (lv_port_pc_vscode_aic-eec) แก้ไขไว้ให้แล้ว ไม่ต้องทำอะไรเพิ่ม**
+
+ถ้าใช้ repo ต้นฉบับของ LVGL จะเจอ error นี้ตอน build บน Windows/MSYS2:
+
+```
+tvgCommon.h:29:10: fatal error: config.h: No such file or directory
+```
+
+สาเหตุ: ThorVG (ไลบรารี vector graphics ใน LVGL) ต้องการ `config.h` ที่ cmake
+ควรจะ generate ให้ แต่บน MSYS2 มันไม่ทำงานถูกต้อง
+
+**วิธีแก้:** ดูรายละเอียดทั้งหมดที่ `patches/fix-thorvg-windows.patch`
+โดยสรุปคือปิด ThorVG ใน `lv_conf.h` และ `CMakeLists.txt` (ไม่กระทบการใช้งานปกติ)
 
 ### ทุก OS: Build ไม่ผ่านหลังย้ายโฟลเดอร์
 
