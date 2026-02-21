@@ -3,7 +3,7 @@
 Hardware Abstraction Layer and UI helpers for the **Embedded C for IoT** course.
 This is the **PC Simulator** version — API signatures are identical to the PSoC Edge E84 embedded version, with mock implementations replacing real hardware access.
 
-> **Author:** Assoc. Prof. Wiroon Sriborrirux, Faculty of Engineering, Burapha University
+> **Author:** Assoc. Prof. Wiroon Sriborrirux (รศ.วิรุฬห์ ศรีบริรักษ์), Faculty of Engineering, Burapha University
 
 ---
 

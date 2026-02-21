@@ -94,11 +94,6 @@ list(APPEND MAIN_SOURCES
 # Part examples sources
 list(APPEND MAIN_SOURCES
     src/part1/part1_examples.c
-    src/part2/part2_examples.c
-    src/part3/part3_examples.c
-    src/part3/part3_scope_example.c
-    src/part4/part4_sim_examples.c
-    src/part5/part5_sim_examples.c
 )
 
 set(MAIN_LIBS lvgl lvgl::examples lvgl::demos ${SDL2_LIBRARIES})
