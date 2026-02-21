@@ -260,8 +260,8 @@ void aic_tilt_set_dt(float dt)
 
 bool aic_tilt_update_from_imu(void)
 {
-    int16_t raw_ax, raw_ay, raw_az;
-    int16_t raw_gx, raw_gy, raw_gz;
+    float raw_ax, raw_ay, raw_az;
+    float raw_gx, raw_gy, raw_gz;
 
     /* Read accelerometer */
     if (!aic_imu_read_accel(&raw_ax, &raw_ay, &raw_az)) {
@@ -274,8 +274,8 @@ bool aic_tilt_update_from_imu(void)
     }
 
     /* Update tilt estimation */
-    return aic_tilt_update((float)raw_ax, (float)raw_ay, (float)raw_az,
-                           (float)raw_gx, (float)raw_gy, (float)raw_gz);
+    return aic_tilt_update(raw_ax, raw_ay, raw_az,
+                           raw_gx, raw_gy, raw_gz);
 }
 
 /* [] END OF FILE */

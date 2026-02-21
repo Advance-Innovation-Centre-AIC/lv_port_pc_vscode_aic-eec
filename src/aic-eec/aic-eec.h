@@ -6,7 +6,7 @@
  *              Burapha University
  *
  *  Author:     Assoc. Prof. Wiroon Sriborrirux (wiroon@eng.buu.ac.th)
- * 
+ *
  * Components:
  *   - Footer/Footnote
  *   - Logo (placeholder for future)
@@ -26,20 +26,35 @@
 #include "lvgl/lvgl.h"
 
 /*******************************************************************************
- * Configuration
+ * Configuration (guarded to avoid conflict with aic_layout.h)
  ******************************************************************************/
 
 /* Copyright text - modify as needed */
-#define AIC_COPYRIGHT_TEXT   "(C) 2026 AIC-EEC.com (Embedded Systems Engineering, Burapha University)"
-#define AIC_COPYRIGHT_COLOR  0x666666
+#ifndef AIC_COPYRIGHT_TEXT
+#define AIC_COPYRIGHT_TEXT   "(C) 2023-2026 AIC-EEC.com and BiiL Centre, Burapha University"
+#endif
+
+#ifndef AIC_COPYRIGHT_COLOR
+#define AIC_COPYRIGHT_COLOR  lv_color_hex(0x666666)
+#endif
 
 /* Header text - modify as needed */
+#ifndef AIC_HEADER_TEXT
 #define AIC_HEADER_TEXT      "Embedded C for IoT Course"
-#define AIC_HEADER_COLOR     0xFFFFFF
+#endif
+
+#ifndef AIC_HEADER_COLOR
+#define AIC_HEADER_COLOR     lv_color_hex(0xFFFFFF)
+#endif
 
 /* Default positions */
+#ifndef AIC_FOOTER_Y_OFFSET
 #define AIC_FOOTER_Y_OFFSET  (-5)
+#endif
+
+#ifndef AIC_HEADER_Y_OFFSET
 #define AIC_HEADER_Y_OFFSET  (5)
+#endif
 
 /*******************************************************************************
  * Footer/Footnote Functions
@@ -56,30 +71,31 @@ lv_obj_t * aic_create_footer(lv_obj_t * parent);
  * @brief Create a footer with custom text
  * @param parent Parent object
  * @param text Custom text to display
- * @param color Text color (hex)
+ * @param color Text color
  * @return Pointer to the created label object
  */
-lv_obj_t * aic_create_footer_custom(lv_obj_t * parent, const char * text, uint32_t color);
+lv_obj_t * aic_create_footer_custom(lv_obj_t * parent, const char * text, lv_color_t color);
 
 /*******************************************************************************
  * Header/Top Note Functions
  ******************************************************************************/
 
 /**
- * @brief Create a header label with course name
+ * @brief Create a header label with title
  * @param parent Parent object
- * @return Pointer to the created label object
+ * @param title Header title text
+ * @return Pointer to the created header object
  */
-lv_obj_t * aic_create_header(lv_obj_t * parent);
+lv_obj_t * aic_create_header(lv_obj_t * parent, const char *title);
 
 /**
  * @brief Create a header with custom text
  * @param parent Parent object
  * @param text Custom text to display
- * @param color Text color (hex)
+ * @param color Text color
  * @return Pointer to the created label object
  */
-lv_obj_t * aic_create_header_custom(lv_obj_t * parent, const char * text, uint32_t color);
+lv_obj_t * aic_create_header_custom(lv_obj_t * parent, const char * text, lv_color_t color);
 
 /*******************************************************************************
  * Logo Functions (Placeholder for future implementation)
@@ -126,9 +142,9 @@ lv_obj_t * aic_create_video_controls(lv_obj_t * parent);
 /**
  * @brief Apply AIC-EEC theme/style to screen
  * @param screen Screen object to style
- * @param bg_color Background color (hex)
+ * @param bg_color Background color
  */
-void aic_apply_theme(lv_obj_t * screen, uint32_t bg_color);
+void aic_apply_theme(lv_obj_t * screen, lv_color_t bg_color);
 
 /**
  * @brief Create a styled container with border

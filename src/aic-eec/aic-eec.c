@@ -4,7 +4,7 @@
  * Description: AIC-EEC Common UI Components Implementation
  *              Embedded Systems Engineering, Faculty of Engineering,
  *              Burapha University
- * 
+ *
  * Author:      Assoc. Prof. Wiroon Sriborrirux (wiroon@eng.buu.ac.th)
  *
  ******************************************************************************/
@@ -16,34 +16,14 @@
  * Footer/Footnote Functions
  ******************************************************************************/
 
-lv_obj_t * aic_create_footer(lv_obj_t * parent)
-{
-    return aic_create_footer_custom(parent, AIC_COPYRIGHT_TEXT, AIC_COPYRIGHT_COLOR);
-}
+/* aic_create_footer() is now provided by aic_layout.c */
+/* aic_create_header() is now provided by aic_layout.c */
 
-lv_obj_t * aic_create_footer_custom(lv_obj_t * parent, const char * text, uint32_t color)
-{
-    lv_obj_t * footer = lv_label_create(parent);
-    lv_label_set_text(footer, text);
-    lv_obj_set_style_text_color(footer, lv_color_hex(color), 0);
-    lv_obj_align(footer, LV_ALIGN_BOTTOM_MID, 0, AIC_FOOTER_Y_OFFSET);
-    return footer;
-}
-
-/*******************************************************************************
- * Header/Top Note Functions
- ******************************************************************************/
-
-lv_obj_t * aic_create_header(lv_obj_t * parent)
-{
-    return aic_create_header_custom(parent, AIC_HEADER_TEXT, AIC_HEADER_COLOR);
-}
-
-lv_obj_t * aic_create_header_custom(lv_obj_t * parent, const char * text, uint32_t color)
+lv_obj_t * aic_create_header_custom(lv_obj_t * parent, const char * text, lv_color_t color)
 {
     lv_obj_t * header = lv_label_create(parent);
     lv_label_set_text(header, text);
-    lv_obj_set_style_text_color(header, lv_color_hex(color), 0);
+    lv_obj_set_style_text_color(header, color, 0);
     lv_obj_align(header, LV_ALIGN_TOP_MID, 0, AIC_HEADER_Y_OFFSET);
     return header;
 }
@@ -124,9 +104,9 @@ lv_obj_t * aic_create_video_controls(lv_obj_t * parent)
  * Utility Functions
  ******************************************************************************/
 
-void aic_apply_theme(lv_obj_t * screen, uint32_t bg_color)
+void aic_apply_theme(lv_obj_t * screen, lv_color_t bg_color)
 {
-    lv_obj_set_style_bg_color(screen, lv_color_hex(bg_color), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(screen, bg_color, LV_PART_MAIN);
 }
 
 lv_obj_t * aic_create_container(lv_obj_t * parent, int32_t width, int32_t height)

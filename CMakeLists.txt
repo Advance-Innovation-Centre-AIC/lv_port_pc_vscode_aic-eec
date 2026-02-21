@@ -86,6 +86,9 @@ list(APPEND MAIN_SOURCES
     src/aic-eec/sensors.c
     src/aic-eec/scope.c
     src/aic-eec/tilt.c
+    src/aic-eec/aic_layout.c
+    src/aic-eec/aic_event.c
+    src/aic-eec/aic_log.c
 )
 
 # Part examples sources
