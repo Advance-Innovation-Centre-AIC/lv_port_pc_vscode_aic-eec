@@ -118,7 +118,9 @@ make -j
 
 ## รายการตัวอย่างทั้งหมด
 
-### Part 1: LVGL พื้นฐาน + GPIO
+### Part 1: LVGL พื้นฐาน + GPIO (11 Examples)
+
+**Section I — UI Only (จำลองบน PC ได้)**
 
 | Example | ชื่อ | เรียนรู้ |
 |---------|------|---------|
@@ -128,7 +130,20 @@ make -j
 | 4 | Switch Toggle | Switch, State Check |
 | 5 | GPIO Dashboard | Layout, Multiple Widgets |
 
-### Part 2: แสดงผลข้อมูลเซ็นเซอร์
+**Section II — Hardware Integration (ใช้บอร์ดจริง / mock บน PC)**
+
+| Example | ชื่อ | เรียนรู้ |
+|---------|------|---------|
+| 6 | HW LED Control | Real GPIO LED On/Off/Toggle |
+| 7 | HW Button Status | Real Button State Display |
+| 8 | HW ADC Display | Real ADC Potentiometer Reading |
+| 9 | HW GPIO Dashboard | Combined LEDs + Button + ADC |
+| 10 | CapSense Mockup | CapSense UI (no hardware) |
+| 11 | CapSense Hardware | Real CapSense via I2C |
+
+### Part 2: แสดงผลข้อมูลเซ็นเซอร์ (11 Examples)
+
+**Section I — Simulated Data (จำลองบน PC ได้)**
 
 | Example | ชื่อ | เรียนรู้ |
 |---------|------|---------|
@@ -139,7 +154,19 @@ make -j
 | 5 | Sensor Dashboard | TabView, IMU + ADC |
 | 6 | Chart Dashboard | Bar/Area/Scatter/Line Charts |
 
-### Part 3: Oscilloscope & Signal Processing
+**Section II — Hardware Integration (ใช้บอร์ดจริง / mock บน PC)**
+
+| Example | ชื่อ | เรียนรู้ |
+|---------|------|---------|
+| 7 | Real IMU Display | BMI270 3-Axis Accelerometer Chart |
+| 8 | Real Sensor Dashboard | Real ADC + IMU Dashboard |
+| 9 | Real Arc Gauge | Real Potentiometer → Arc Display |
+| 10 | Real Scale Gauge | Real Potentiometer → Scale Needle |
+| 11 | Real Chart Dashboard | Real IMU on Multiple Chart Types |
+
+### Part 3: Oscilloscope & Signal Processing (8 Examples)
+
+**Section I — Simulated Data (จำลองบน PC ได้)**
 
 | Example | ชื่อ | เรียนรู้ |
 |---------|------|---------|
@@ -149,9 +176,17 @@ make -j
 | 4 | Mic Visualizer | PDM Microphone Display |
 | 5 | Oscilloscope UI | Full Scope Interface |
 | 6 | Spectrum Analyzer | FFT Frequency Display |
-| 7 | Custom Panel Scope | Custom Panel Navigation |
 
-### Part 4: IPC, Logging, Event Bus (Simulated)
+**Section II — Integration (จำลอง + ฮาร์ดแวร์)**
+
+| Example | ชื่อ | เรียนรู้ |
+|---------|------|---------|
+| 7 | Custom Panel Scope | Custom Panel Navigation |
+| 8 | HW Scope | Real Potentiometer + LED3 Scope |
+
+### Part 4: IPC, Logging, Event Bus (9 Examples)
+
+**Section I — Simulated (จำลองบน PC ได้)**
 
 | Example | ชื่อ | เรียนรู้ |
 |---------|------|---------|
@@ -159,13 +194,20 @@ make -j
 | 2 | Logging System | Remote Logging |
 | 3 | IPC Sensor Data | Sensor Data via IPC |
 | 4 | Event Bus | Event-driven Architecture |
+
+**Section II — Hardware IPC (ใช้บอร์ดจริง / mock บน PC)**
+
+| Example | ชื่อ | เรียนรู้ |
+|---------|------|---------|
 | 5 | HW IPC LED | LED Control via IPC |
 | 6 | HW IPC Button | Button Events via IPC |
 | 7 | HW IPC Dashboard | Full IPC Dashboard |
-| 8 | Advanced Features | Combined Features |
-| 9 | CapSense IPC | CapSense via IPC |
+| 8 | Advanced Features | IPC + Event Bus + Logging |
+| 9 | CapSense IPC | CapSense Touch via IPC |
 
-### Part 5: WiFi Manager & IoT (Simulated)
+### Part 5: WiFi Manager & IoT (8 Examples)
+
+**Section I — WiFi Basics (จำลองบน PC ได้)**
 
 | Example | ชื่อ | เรียนรู้ |
 |---------|------|---------|
@@ -173,10 +215,15 @@ make -j
 | 2 | WiFi Connect | Connect/Disconnect Flow |
 | 3 | TCP/IP Info | Network Information Display |
 | 4 | Hardware Info | System Information |
+
+**Section II — Full WiFi Integration (จำลอง + ฮาร์ดแวร์)**
+
+| Example | ชื่อ | เรียนรู้ |
+|---------|------|---------|
 | 5 | WiFi Manager | Full WiFi Manager UI |
-| 6 | WiFi Status | Status Dashboard |
-| 7 | IoT Dashboard | IoT Overview |
-| 8 | MQTT Preview | MQTT UI Preview |
+| 6 | WiFi Status | Real-time Status Dashboard |
+| 7 | IoT Dashboard | WiFi + Sensors Combined |
+| 8 | MQTT Preview | MQTT Broker/Topics UI |
 
 ---
 
