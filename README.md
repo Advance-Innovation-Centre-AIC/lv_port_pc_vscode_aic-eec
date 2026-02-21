@@ -1,6 +1,6 @@
 # AIC-EEC LVGL PC Simulator
 
-LVGL PC Simulator สำหรับวิชา **Embedded C for IoT** มหาวิทยาลัยบูรพา
+LVGL PC Simulator สำหรับ **Embedded Systems and IoT Development**, ภาควิชาวิศวกรรมไฟฟ้า คณะวิศวกรรมศาสตร์ มหาวิทยาลัยบูรพา
 
 จำลองหน้าจอ LVGL ขนาด 800x480 บน PC เพื่อทดสอบ UI ก่อนลงบอร์ด PSoC Edge E84
 
@@ -299,4 +299,4 @@ rm -rf build bin
 
 ---
 
-(C) 2026 BiiL - Embedded C for IoT, Burapha University
+(C) 2026 BiiL - Embedded Systems and IoT Development, Burapha University
