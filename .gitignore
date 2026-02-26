@@ -14,3 +14,9 @@ bin/
 # Claude Code
 .claude/
 CLAUDE.md
+
+# Unreleased parts (remove line when ready to release)
+src/part2/
+src/part3/
+src/part4/
+src/part5/
