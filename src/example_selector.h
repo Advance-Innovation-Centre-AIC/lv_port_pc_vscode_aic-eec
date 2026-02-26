@@ -83,10 +83,11 @@
  ******************************************************************************/
 
 #include "part1/part1_examples.h"
-#include "part2/part2_examples.h"
+/* #include "part2/part2_examples.h"
 #include "part3/part3_examples.h"
 #include "part4/part4_examples.h"
 #include "part5/part5_examples.h"
+*/
 
 /*******************************************************************************
  * Run Selected Example
