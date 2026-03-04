@@ -27,7 +27,7 @@
  * Part 4: IPC, Logging, Event Bus
  * Part 5: WiFi Manager & IoT
  */
-#define SELECTED_PART       2
+#define SELECTED_PART       1
 
 /**
  * @brief Select Example Number within the Part
