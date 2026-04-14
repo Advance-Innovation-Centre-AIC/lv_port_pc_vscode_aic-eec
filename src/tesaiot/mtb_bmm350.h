@@ -1,0 +1,5 @@
+#ifndef MTB_BMM350_H
+#define MTB_BMM350_H
+#define MTB_BMM350_ADDRESS_DEFAULT 0x14
+#define MTB_BMM350_ADDRESS_SEC     0x15
+#endif

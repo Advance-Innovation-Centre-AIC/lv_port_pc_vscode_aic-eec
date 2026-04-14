@@ -76,117 +76,9 @@ set(CONFIG_LV_USE_THORVG_INTERNAL OFF CACHE BOOL "" FORCE)
 add_subdirectory(lvgl)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 
-# Core sources
-set(MAIN_SOURCES src/mouse_cursor_icon.c src/hal/hal.c)
-
-# AIC-EEC library sources (mock + pure LVGL)
-list(APPEND MAIN_SOURCES
-    src/aic-eec/aic-eec.c
-    src/aic-eec/gpio.c
-    src/aic-eec/sensors.c
-    src/aic-eec/scope.c
-    src/aic-eec/tilt.c
-    src/aic-eec/aic_layout.c
-    src/aic-eec/aic_event.c
-    src/aic-eec/aic_log.c
-)
-
-# Part examples sources
-list(APPEND MAIN_SOURCES
-    src/part1/part1_examples.c
-    src/part2/part2_examples.c
-    src/part3/part3_examples.c
-    src/part3/part3_scope_example.c
-    src/part4/part4_sim_examples.c
-    src/part5/part5_sim_examples.c
-    src/part6/part6_examples.c
-)
-
-# FreePik Icons — all 3 sizes (32, 48, 64) with suffixed symbols
-file(GLOB ICON_SOURCES "src/part6/icons/*.c")
-list(APPEND MAIN_SOURCES ${ICON_SOURCES})
-
-# Thai fonts (Noto Sans Thai for LVGL)
-file(GLOB THAI_FONT_SOURCES "src/fonts/*.c")
-list(APPEND MAIN_SOURCES ${THAI_FONT_SOURCES})
-
-set(MAIN_LIBS lvgl lvgl::examples lvgl::demos ${SDL2_LIBRARIES})
-
-# Create the main executable, depending on the FreeRTOS option
-if(USE_FREERTOS)
-    list(APPEND MAIN_SOURCES src/freertos_main.c src/freertos/freertos_posix_port.c ${FREERTOS_SOURCES})
-    list(APPEND MAIN_LIBS freertos_config freertos_kernel)
-else()
-    list(APPEND MAIN_SOURCES src/main.c)
-endif()
-
-
-if(NOT MSVC)
-    list(APPEND MAIN_LIBS m pthread)
-endif()
-
-# Custom target to run the executable
-add_custom_target(run COMMAND ${EXECUTABLE_OUTPUT_PATH}/main DEPENDS main)
-
-# Conditionally include and link SDL2_image if LV_USE_DRAW_SDL is enabled
-if(LV_USE_DRAW_SDL)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
-    find_package(SDL2_image REQUIRED)
-    target_include_directories(lvgl PUBLIC ${SDL2_IMAGE_INCLUDE_DIRS})
-    list(APPEND MAIN_LIBS ${SDL2_IMAGE_LIBRARIES})
-endif()
-
-# Conditionally include and link libpng if LV_USE_LIBPNG is enabled
-if(LV_USE_LIBPNG)
-    find_package(PNG REQUIRED)
-    target_include_directories(lvgl PUBLIC ${PNG_INCLUDE_DIRS})
-    list(APPEND MAIN_LIBS ${PNG_LIBRARIES})
-endif()
-
-# Conditionally include and link libjpeg-turbo if LV_USE_LIBJPEG_TURBO is enabled
-if(LV_USE_LIBJPEG_TURBO)
-    find_package(JPEG REQUIRED)
-    target_include_directories(lvgl PUBLIC ${JPEG_INCLUDE_DIRS})
-    list(APPEND MAIN_LIBS ${JPEG_LIBRARIES})
-endif()
-
-# Conditionally include and link FFmpeg libraries if LV_USE_FFMPEG is enabled
-if(LV_USE_FFMPEG)
-    list(APPEND MAIN_LIBS avformat avcodec avutil swscale z)
-endif()
-
-# Conditionally include and link FreeType if LV_USE_FREETYPE is enabled
-if(LV_USE_FREETYPE)
-    find_package(Freetype REQUIRED)
-    target_include_directories(lvgl PUBLIC ${FREETYPE_INCLUDE_DIRS})
-    list(APPEND MAIN_LIBS ${FREETYPE_LIBRARIES})
-endif()
-
-if(LVGL_PRO_PROJECT_DIR)
-  if(EXISTS "${LVGL_PRO_PROJECT_DIR}/CMakeLists.txt")
-    add_subdirectory(${LVGL_PRO_PROJECT_DIR} ui)
-    list(APPEND MAIN_LIBS lib-ui)
-
-    target_compile_definitions(lib-ui PUBLIC LV_LVGL_H_INCLUDE_SIMPLE)
-    target_include_directories(lib-ui PUBLIC
-      ${LVGL_PRO_PROJECT_DIR}  # local headers like ui.h, generated files, etc.
-      ${CMAKE_SOURCE_DIR}/lvgl # include "lvgl.h" works
-    )
-    message(STATUS "LVGL Pro Project enabled from: ${LVGL_PRO_PROJECT_DIR}")
-  else()
-    message(
-      WARNING
-        "LVGL_PRO_PROJECT_DIR specified but no CMakeLists.txt found at: ${LVGL_PRO_PROJECT_DIR}"
-    )
-  endif()
-endif()
-
-add_executable(main ${MAIN_SOURCES})
-target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
-target_link_libraries(main ${MAIN_LIBS})
-
 # ======================================================================
-# TESAIoT Episodes & Practice Examples — each builds a separate executable
+# TESAIoT — IoT Health Gateway, Episodes & Practice Examples
+# Each builds a separate executable under bin/
 # ======================================================================
 
 # Common sources shared by all TESAIoT example executables
@@ -251,22 +143,15 @@ foreach(PRAC_DIR ${PRAC_DIRS})
     add_tesaiot_example(${PRAC_NAME} ${PRAC_DIR})
 endforeach()
 
-# --- HMI Episodes (4 pure UI) ---
+# --- Episodes (HMI + Interactive) ---
 file(GLOB EP_DIRS "src/episodes/*")
 foreach(EP_DIR ${EP_DIRS})
     get_filename_component(EP_NAME ${EP_DIR} NAME)
     add_tesaiot_example(${EP_NAME} ${EP_DIR})
 endforeach()
 
-# On Windows, GUI applications do not show a console by default,
-# which hides log output. This ensures a console is available for logging.
-if (WIN32)
-    if (MSVC)
-        target_link_options(main PRIVATE "/SUBSYSTEM:CONSOLE")
-    else()
-        target_link_options(main PRIVATE "-mconsole")
-    endif()
-endif()
+# --- IoT Health Gateway (standalone) ---
+add_tesaiot_example(iot-health-gateway src/iot-health-gateway)
 
 # Apply additional compile options if the build type is Debug
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

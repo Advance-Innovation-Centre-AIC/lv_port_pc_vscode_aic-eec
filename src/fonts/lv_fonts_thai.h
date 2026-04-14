@@ -7,7 +7,6 @@
 extern const lv_font_t lv_font_noto_thai_14;
 extern const lv_font_t lv_font_noto_thai_16;
 extern const lv_font_t lv_font_noto_thai_20;
-extern const lv_font_t lv_font_noto_thai_24;
 extern const lv_font_t lv_font_noto_thai_28;
 
 #endif /* LV_FONTS_THAI_H */

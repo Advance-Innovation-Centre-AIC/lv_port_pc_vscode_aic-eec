@@ -1,0 +1,5 @@
+#ifndef MTB_SHT4X_H
+#define MTB_SHT4X_H
+#define MTB_SHT40_ADDRESS_DEFAULT 0x44
+#define MTB_SHT40_ADDRESS_SEC     0x45
+#endif

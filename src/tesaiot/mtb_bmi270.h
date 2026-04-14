@@ -1,0 +1,5 @@
+#ifndef MTB_BMI270_H
+#define MTB_BMI270_H
+#define MTB_BMI270_ADDRESS_DEFAULT 0x68
+#define MTB_BMI270_ADDRESS_SEC     0x69
+#endif
