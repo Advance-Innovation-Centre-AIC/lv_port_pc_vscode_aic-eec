@@ -99,7 +99,16 @@ list(APPEND MAIN_SOURCES
     src/part3/part3_scope_example.c
     src/part4/part4_sim_examples.c
     src/part5/part5_sim_examples.c
+    src/part6/part6_examples.c
 )
+
+# FreePik Icons — all 3 sizes (32, 48, 64) with suffixed symbols
+file(GLOB ICON_SOURCES "src/part6/icons/*.c")
+list(APPEND MAIN_SOURCES ${ICON_SOURCES})
+
+# Thai fonts (Noto Sans Thai for LVGL)
+file(GLOB THAI_FONT_SOURCES "src/fonts/*.c")
+list(APPEND MAIN_SOURCES ${THAI_FONT_SOURCES})
 
 set(MAIN_LIBS lvgl lvgl::examples lvgl::demos ${SDL2_LIBRARIES})
 
@@ -175,6 +184,79 @@ endif()
 add_executable(main ${MAIN_SOURCES})
 target_compile_definitions(main PRIVATE LV_CONF_INCLUDE_SIMPLE)
 target_link_libraries(main ${MAIN_LIBS})
+
+# ======================================================================
+# TESAIoT Episodes & Practice Examples — each builds a separate executable
+# ======================================================================
+
+# Common sources shared by all TESAIoT example executables
+file(GLOB TESAIOT_MOCK_SOURCES "src/tesaiot/mock_sensors/*/mock_*.c")
+set(TESAIOT_COMMON_SOURCES
+    src/sim_main.c
+    src/mouse_cursor_icon.c
+    src/hal/hal.c
+    src/tesaiot/sensor_bus.c
+    src/tesaiot/game_common.c
+    src/tesaiot/app_logo.c
+    ${TESAIOT_MOCK_SOURCES}
+)
+
+# Thai fonts (shared)
+file(GLOB TESAIOT_FONT_SOURCES "src/fonts/*.c")
+list(APPEND TESAIOT_COMMON_SOURCES ${TESAIOT_FONT_SOURCES})
+
+# Include paths for TESAIoT stubs + mock sensors
+set(TESAIOT_INCLUDE_DIRS
+    ${PROJECT_SOURCE_DIR}/src/tesaiot
+    ${PROJECT_SOURCE_DIR}/src/tesaiot/mock_sensors
+    ${PROJECT_SOURCE_DIR}/src/tesaiot/mock_sensors/bmi270
+    ${PROJECT_SOURCE_DIR}/src/tesaiot/mock_sensors/dps368
+    ${PROJECT_SOURCE_DIR}/src/tesaiot/mock_sensors/sht4x
+    ${PROJECT_SOURCE_DIR}/src/tesaiot/mock_sensors/bmm350
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/fonts
+    ${PROJECT_SOURCE_DIR}/main/inc
+    ${PROJECT_SOURCE_DIR}/lvgl
+    ${PROJECT_SOURCE_DIR}
+    ${SDL2_INCLUDE_DIRS}
+)
+
+set(TESAIOT_LIBS lvgl lvgl::examples lvgl::demos ${SDL2_LIBRARIES})
+if(NOT MSVC)
+    list(APPEND TESAIOT_LIBS m pthread)
+endif()
+
+# Helper macro: add_tesaiot_example(target_name source_dir)
+macro(add_tesaiot_example TARGET_NAME SOURCE_DIR)
+    file(GLOB_RECURSE _EXAMPLE_SOURCES "${SOURCE_DIR}/*.c")
+    # Collect all subdirectories + their parents for include paths
+    file(GLOB_RECURSE _ALL_HEADERS "${SOURCE_DIR}/*.h")
+    set(_EXAMPLE_INC_DIRS ${SOURCE_DIR})
+    foreach(_HDR ${_ALL_HEADERS})
+        get_filename_component(_DIR ${_HDR} DIRECTORY)
+        get_filename_component(_PARENT ${_DIR} DIRECTORY)
+        list(APPEND _EXAMPLE_INC_DIRS ${_DIR} ${_PARENT})
+    endforeach()
+    list(REMOVE_DUPLICATES _EXAMPLE_INC_DIRS)
+    add_executable(${TARGET_NAME} ${TESAIOT_COMMON_SOURCES} ${_EXAMPLE_SOURCES})
+    target_include_directories(${TARGET_NAME} PRIVATE ${TESAIOT_INCLUDE_DIRS} ${_EXAMPLE_INC_DIRS})
+    target_compile_definitions(${TARGET_NAME} PRIVATE LV_CONF_INCLUDE_SIMPLE)
+    target_link_libraries(${TARGET_NAME} ${TESAIOT_LIBS})
+endmacro()
+
+# --- Practice Examples (24) ---
+file(GLOB PRAC_DIRS "src/practise/prac_*")
+foreach(PRAC_DIR ${PRAC_DIRS})
+    get_filename_component(PRAC_NAME ${PRAC_DIR} NAME)
+    add_tesaiot_example(${PRAC_NAME} ${PRAC_DIR})
+endforeach()
+
+# --- HMI Episodes (4 pure UI) ---
+file(GLOB EP_DIRS "src/episodes/*")
+foreach(EP_DIR ${EP_DIRS})
+    get_filename_component(EP_NAME ${EP_DIR} NAME)
+    add_tesaiot_example(${EP_NAME} ${EP_DIR})
+endforeach()
 
 # On Windows, GUI applications do not show a console by default,
 # which hides log output. This ensures a console is available for logging.
